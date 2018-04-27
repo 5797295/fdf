@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 15:28:11 by jukim             #+#    #+#             */
-/*   Updated: 2018/03/11 20:54:08 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/19 20:01:53 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# define BUFF_SIZE 8
 
 typedef struct	s_list
 {
@@ -87,5 +89,8 @@ char			*ft_concat_params(int argc, char **argv);
 char			*ft_sort_params(int argc, char **argv);
 void			ft_swap(int *a, int *b);
 int				*ft_range(int min, int max);
+int				get_next_line(const int fd, char **line);
+int				get_line(int fd, char **data, char **line);
+char			**ft_strsplitx(char const *s, char c);
 
 #endif

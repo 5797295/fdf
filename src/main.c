@@ -6,86 +6,36 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 22:46:15 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/18 20:07:01 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/27 16:36:14 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h" 
+#include "fdf.h"
 
 int	main(int ac, char **av)
 {
-	void *mlx_ptr;
-	void *win_ptr;
-	t_yeee place;
+	t_yeee p;
 
-	if (ac == 2)
-		 validation(av[1]);
+	init_value(&p);
+	if (ac == 4)
+	{
+		p.window_x = ft_atoi(av[2]);
+		p.window_y = ft_atoi(av[3]);
+		if (p.window_x < 500)
+			usage_error();
+		if (p.window_y < 500)
+			usage_error();
+		validation(av[1]);
+		p.window_x >= p.window_y ? (p.l_w = p.window_x) : (p.l_w = p.window_y);
+	}
 	else
 		usage_error();
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 600, 600, "YEEEEEE");
-	place.x = 90;
-	place.y = 90;
-	while (place.x < 500)
-	{
-		mlx_pixel_put(mlx_ptr, win_ptr, place.x++, place.y++, 0x54ff9f);
-		if (place.y == 100)
-		{
-			place.x += 10;
-			place.y = 90;
-		}
-	}
-	place.x = 90;
-	place.y = 90;
-	while (place.y < 500)
-	{
-		mlx_pixel_put(mlx_ptr, win_ptr, place.x++, place.y++, 0x54ff9f);
-		if (place.x == 100)
-		{
-			place.y += 10;
-			place.x = 90;
-		}
-	}
-	place.x = 90;
-	place.y = 90;
-	while (place.x <= 490)
-		mlx_pixel_put(mlx_ptr, win_ptr, place.x++, place.y, 0x4876ff);
-	place.x = 90;
-	place.y = 90;
-	while (place.y <= 490)
-		mlx_pixel_put(mlx_ptr, win_ptr, place.x, place.y++, 0x4876ff);
-	place.x = 100;
-	place.y = 100;
-	while (place.x <= 500)
-	{
-		while (place.y <= 500)
-//		{
-//			if (place.y >= 120 && place.y <= 130)
-//				mlx_pixel_put(mlx_ptr, win_ptr, place.x++, place.y++, 0x4876ff);
-//			else
-				mlx_pixel_put(mlx_ptr, win_ptr, place.x, place.y++, 0x4876ff);
-//		}
-		place.x = place.x + 20;
-		place.y = 100;
-	}
-	place.x = 100;
-	place.y = 100;
-	while (place.y <= 500)
-	{
-		while (place.x <= 500)
-			mlx_pixel_put(mlx_ptr, win_ptr, place.x++, place.y, 0x4876ff);
-		place.y = place.y + 20;
-		place.x = 100;
-	}
-	mlx_key_hook(win_ptr, hotkey, 0);
-	mlx_string_put(mlx_ptr, win_ptr, 5, 5, 0x4876ff, "[ESC] - Exit");
-	mlx_loop(mlx_ptr);
-	return (0);
-}
-
-int		hotkey(int key)
-{
-	if (key == 53)
-		exit(0);
+	p.av = av[1];
+	read_xyz(&p);
+	p.mlx = mlx_init();
+	p.win = mlx_new_window(p.mlx, p.window_x, p.window_y, "YEEEEEE");
+	store_horizontally(&p);
+	store_vertically(&p);
+	init(&p);
 	return (0);
 }

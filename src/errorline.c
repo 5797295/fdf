@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 15:29:28 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/18 16:35:22 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/26 20:20:18 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	usage_error(void)
 {
-	ft_putendl("usage: ./fdf <file_name>");
+	ft_putendl("usage: ./fdf <file_name> <Window Width> <Window Height>");
+	ft_putendl("\t\t- Width and Height must be at least 500.");
 	exit(0);
 }
 
