@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 15:28:11 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/19 20:01:53 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/28 00:21:51 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ void			ft_swap(int *a, int *b);
 int				*ft_range(int min, int max);
 int				get_next_line(const int fd, char **line);
 int				get_line(int fd, char **data, char **line);
-char			**ft_strsplitx(char const *s, char c);
+int				ft_atoi_base(const char *str, int base);
 
 #endif

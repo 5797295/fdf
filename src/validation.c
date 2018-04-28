@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 15:17:04 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/26 22:27:31 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/27 21:52:05 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void	check1(char *str, int fd)
 		error("error: file is empty", fd);
 	while (str[++i] != '\0')
 		if (str[i] < 48 || str[i] > 58)
-			if (str[i] != ' ' && str[i] != '\n' && str[i] != '-')
-				error("error: invalid input file", fd);
+			if ((str[i] < 'a' && str[i] > 'f') || (str[i] <'A' && str[i] > 'F'))
+			{
+				if (str[i] == ',')
+					if (str[i + 1] != '0' || str[i + 2] != 'x')
+						error("error: invalid input file", fd);
+				if (str[i] != ' ' && str[i] != '\n' && str[i] != '-' &&
+						str[i] != ',' && str[i] != 'x')
+					error("error: invalid input file", fd);
+			}
 }

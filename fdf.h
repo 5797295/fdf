@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/02 22:48:46 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/27 16:30:33 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/28 00:30:01 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef struct	s_weee
 	float xx;
 	float yy;
 	int zz;
-	int r;
+	long long r;
+	int		f;
 }				t_weee;
 
 typedef struct	s_yeee
@@ -46,6 +47,7 @@ typedef struct	s_yeee
 	float	y;
 	int		n;
 	int		m;
+	int		**fcolor;
 	int	 	xsize;
 	int	 	ysize;
 	char	*line;
@@ -61,7 +63,7 @@ typedef struct	s_yeee
 	char	*av;
 	float	mx;
 	int		**v;
-	int		**c;
+	int		cc;
 	float	gap;
 	int		a;
 	int		color;
@@ -69,6 +71,8 @@ typedef struct	s_yeee
 	float	y_max;
 	float	x_mid;
 	float	y_mid;
+	float	mid_wx;
+	float	mid_wy;
 	int		window_x;
 	int		window_y;
 	float	l_w;
@@ -135,5 +139,6 @@ void		read_xyz(t_yeee *p);
 void		get_z(int y, t_yeee *p);
 void		get_xy(int fd, t_yeee *p);
 void		malloc_array(t_yeee *p);
+int			ft_fu(char  *str, char c);
 
 #endif

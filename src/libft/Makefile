@@ -6,7 +6,7 @@
 #    By: jukim <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/20 14:33:59 by jukim             #+#    #+#              #
-#    Updated: 2018/04/19 20:01:34 by jukim            ###   ########.fr        #
+#    Updated: 2018/04/27 22:15:15 by jukim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,8 @@ SRC = ft_memset.c			\
 		ft_range.c			\
 		ft_swap.c			\
 		get_next_line.c		\
-		ft_strsplitx.c
+		ft_atoi_base.c		\
+		ft_strchrx.c
 
 HEADER = libft.h
 FLAG = -Wall -Wextra -Werror

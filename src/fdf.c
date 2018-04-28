@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 18:07:41 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/27 16:34:55 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/28 00:43:27 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void	init(t_yeee *p)
 	fdf_rgbv(p);
 	draw_xvertex(p);
 	draw_yvertex(p);
-	mlx_key_hook(p->win, hotkey, p);
+	mlx_hook(p->win, 2, 2, hotkey, p);
 	mlx_string_put(p->mlx, p->win, 5, 5, 0x4876ff, "[ESC]       - Exit");
 	mlx_string_put(p->mlx, p->win, 5, 20, 0x4876ff, "[ARROW KEY] - Translation");
 	mlx_string_put(p->mlx, p->win, 5, 35, 0x4876ff, "[I,K]       - Vertex Translation Up/Down");
 	mlx_string_put(p->mlx, p->win, 5, 50, 0x4876ff, "[J,L]       - Vertex Translation Left/Right");
 	mlx_string_put(p->mlx, p->win, 5, 65, 0x4876ff, "[Z,X]       - Move Vertex Up/Down");
-	mlx_string_put(p->mlx, p->win, 5, 80, 0x4876ff, "[1,2,3]     - Change Color");
-	mlx_string_put(p->mlx, p->win, 5, 95, 0x4876ff, "[V]         - Reset");
+	mlx_string_put(p->mlx, p->win, 5, 80, 0x4876ff, "[+,-]       - Zoom In/Out");
+	mlx_string_put(p->mlx, p->win, 5, 95, 0x4876ff, "[1,2,3,4]   - Change Color");
+	mlx_string_put(p->mlx, p->win, 5, 110, 0x4876ff, "[V]         - Reset");
 	mlx_loop(p->mlx);
 }
 
@@ -48,7 +49,7 @@ void	draw_xvertex(t_yeee *p)
 				mlx_pixel_put(p->mlx, p->win, p->k, ((p->k - p->q[i][j].a) /
 							(p->q[i][j + 1].a - p->q[i][j].a) *
 							(p->q[i][j + 1].b - p->q[i][j].b) +
-							p->q[i][j].b), p->q[i][j].r);
+							p->q[i][j].b), p->fcolor[i][j] != 0 ? p->fcolor[i][j] : p->q[i][j].r);
 				p->k++;
 			}
 			while (p->l < p->q[i][j + 1].b)
@@ -56,7 +57,7 @@ void	draw_xvertex(t_yeee *p)
 				mlx_pixel_put(p->mlx, p->win, ((p->l - p->q[i][j].b) /
 							(p->q[i][j + 1].b - p->q[i][j].b) *
 							(p->q[i][j + 1].a - p->q[i][j].a) +
-							p->q[i][j].a), p->l, p->q[i][j].r);
+							p->q[i][j].a), p->l, p->fcolor[i][j] != 0 ? p->fcolor[i][j] : p->q[i][j].r);
 				p->l++;
 			}
 		}
@@ -81,7 +82,7 @@ void	draw_yvertex(t_yeee *p)
 				mlx_pixel_put(p->mlx, p->win, p->k, ((p->k - p->u[i][j].a) /
 							(p->u[i][j + 1].a - p->u[i][j].a) *
 							(p->u[i][j + 1].b - p->u[i][j].b) +
-							p->u[i][j].b), p->u[i][j].r);
+							p->u[i][j].b), p->fcolor[j][i] != 0 ? p->fcolor[j][i] : p->u[i][j].r);
 				p->k++;
 			}
 			while (p->l < p->u[i][j + 1].b)
@@ -89,7 +90,7 @@ void	draw_yvertex(t_yeee *p)
 				mlx_pixel_put(p->mlx, p->win, ((p->l - p->u[i][j].b) /
 							(p->u[i][j + 1].b - p->u[i][j].b) *
 							(p->u[i][j + 1].a - p->u[i][j].a) +
-							p->u[i][j].a), p->l, p->u[i][j].r);
+							p->u[i][j].a), p->l, p->fcolor[j][i] != 0 ? p->fcolor[j][i] : p->u[i][j].r);
 				p->l++;
 			}
 		}
@@ -115,8 +116,9 @@ int		hotkey(int key, t_yeee *p)
 	key == 18 ? p->color = 1 : 0;
 	key == 19 ? p->color = 2 : 0;
 	key == 20 ? p->color = 3 : 0;
-	key == 78 ? zoom(p, -1) : 0;
-	key == 69 ? zoom(p, 1) : 0;
+	key == 21 ? p->color = 4 : 0;
+	(key == 78 || key == 27) ? zoom(p, -1) : 0;
+	(key == 69 || key == 24) ? zoom(p, 1) : 0;
 	store_vertically(p);
 	init(p);
 	return (0);
@@ -159,22 +161,15 @@ void	zoom(t_yeee *p, int n)
 	int j;
 
 	i = -1;
-//	p->zoom += n;
 	n > 0 ? (p->zoom = 1.1) : (p->zoom = 0.9);
+	n < 0 ? (p->zoom_x = (p->l_w / 20)) : (p->zoom_x = -(p->l_w / 20));
 	while (++i < p->ysize)
 	{
 		j = -1;
 		while (++j < p->xsize)
 		{
-		/*	p->zoom_x = (j < (p->xsize / 2) ? p->zoom * (p->xsize / 2 - j) : 0);
-			j > (p->xsize / 2) ? p->zoom_x = -p->zoom * (j - p->xsize / 2) : 0;
-			p->q[i][j].a = p->q[0][0].xx - p->zoom_x + j * (p->window_x / 2 / p->xsize);
-			p->zoom_y = (i < (p->ysize / 2) ? p->zoom * (p->ysize / 2 - i) : 0);
-			i > (p->ysize / 2) ? p->zoom_y = -p->zoom * (i - p->ysize / 2) : 0;
-			p->q[i][j].b = p->q[0][0].yy - p->zoom_y + i * (p->window_y / 2 / p->ysize);
-			printf("q[%d][%d](%f, %f)\n", i, j, p->q[i][j].a, p->q[i][j].b); */
-			p->q[i][j].a = p->q[i][j].a * p->zoom;
-			p->q[i][j].b = p->q[i][j].b * p->zoom;
+			p->q[i][j].a = p->q[i][j].a * p->zoom + p->zoom_x;
+			p->q[i][j].b = p->q[i][j].b * p->zoom + p->zoom_x;
 		}
 	}
 }
