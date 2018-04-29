@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 21:41:21 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/28 01:05:03 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/28 20:48:04 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	read_xyz(t_yeee *p)
 
 	y = 0;
 	fd = open(p->av, O_RDONLY);
-	get_xy(fd, p);
+	get_xy(p, fd);
 	close(fd);
 	malloc_array(p);
 	fd = open(p->av, O_RDONLY);
 	while ((get_next_line(fd, &p->line) == 1))
 	{
-		get_z(y, p);
+		get_z(p, y);
 		free(p->line);
 		y++;
 		p->line = NULL;
@@ -35,11 +35,11 @@ void	read_xyz(t_yeee *p)
 	p->y_mid = p->ysize / 2;
 }
 
-void	get_z(int y, t_yeee *p)
+void	get_z(t_yeee *p, int y)
 {
-	char **r;
-	char **s;
-	int x;
+	char	**r;
+	char	**s;
+	int		x;
 
 	x = -1;
 	r = ft_strsplit(p->line, ' ');
@@ -63,7 +63,7 @@ void	get_z(int y, t_yeee *p)
 	free(r);
 }
 
-void	get_xy(int fd, t_yeee *p)
+void	get_xy(t_yeee *p, int fd)
 {
 	int c;
 
@@ -102,7 +102,6 @@ void	malloc_array(t_yeee *p)
 	p->fcolor = (int**)malloc(sizeof(int*) * (p->ysize + 1));
 	while (++x < p->ysize)
 		p->fcolor[x] = (int*)malloc(sizeof(int) * (p->xsize + 1));
-
 }
 
 int		ft_fu(char *str, char c)

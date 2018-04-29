@@ -6,7 +6,7 @@
 /*   By: jukim <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 18:53:10 by jukim             #+#    #+#             */
-/*   Updated: 2018/04/27 19:22:06 by jukim            ###   ########.fr       */
+/*   Updated: 2018/04/28 21:15:54 by jukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,29 @@ void	init_value(t_yeee *p)
 	p->color = 1;
 	p->z_up = 0;
 	p->zoom = 0;
-	p->window_x >= p->window_y ? (p->l_w = p->window_x) : (p->l_w = p->window_y);
+	p->l_w = (p->window_x >= p->window_y ? p->window_x : p->window_y);
 	p->mid_wx = p->window_x / 2;
 	p->mid_wy = p->window_y / 2;
+	p->cc = 1234567;
+}
+
+int		point_count(char *s, char c)
+{
+	int	count;
+	int	point;
+
+	count = 0;
+	point = 0;
+	while (*s != '\0')
+	{
+		if (point == 1 && *s == c)
+			point = 0;
+		if (point == 0 && *s != c)
+		{
+			point = 1;
+			count++;
+		}
+		s++;
+	}
+	return (count);
 }
